@@ -1,0 +1,68 @@
+
+https://www.bezkoder.com/spring-boot-jwt-authentication/
+
+INSERT INTO testdb_spring.roles(name) VALUES('ROLE_USER');
+INSERT INTO testdb_spring.roles(name) VALUES('ROLE_MODERATOR');
+INSERT INTO testdb_spring.roles(name) VALUES('ROLE_ADMIN');
+
+POST:
+http://localhost:9090/api/auth/signup
+JSON RAW
+{
+"username": "mod",
+"email": "mod@bezkoder.com",
+"password": "12345678",
+"role": ["mod", "user"]
+}
+result:
+{
+    "message": "User registered successfully!"
+}
+
+select * from testdb_spring.users;
+
+GET:
+http://localhost:9090/api/test/all
+result:
+Public Content.
+
+GET:
+http://localhost:9090/api/test/user
+result:
+"status": 401
+
+POST:
+http://localhost:9090/api/auth/signin
+JSON RAW
+{
+"username": "mod",
+"password": "12345678"
+}
+result:
+{
+    "id": 1,
+    "username": "mod",
+    "email": "mod@bezkoder.com",
+    "roles": [
+        "ROLE_USER",
+        "ROLE_MODERATOR"
+    ],
+    "accessToken": "...",
+    "tokenType": "Bearer"
+}
+
+GET:
+http://localhost:9090/api/test/user
+add the "accessToken" into Breaer token Auth...
+Result:
+User Content.
+
+GET:
+http://localhost:9090/api/test/mod
+add the "accessToken" into Breaer token Auth...
+Moderator Board.
+
+GET:
+http://localhost:9090/api/test/admin
+add the "accessToken" into Breaer token Auth...
+"status": 401 --- because user is not admin
